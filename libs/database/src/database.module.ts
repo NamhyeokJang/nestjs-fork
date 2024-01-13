@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { DatabaseConfig } from './config'
-import { DataSource, DataSourceOptions } from 'typeorm'
+import { DataSource, DataSourceOptions, EntitySchema } from 'typeorm'
 import {
   addTransactionalDataSource,
   initializeTransactionalContext,
@@ -10,7 +10,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 
 @Module({})
 export class DatabaseModule {
-  static forRoot() {
+  static forRoot(entities: Array<EntitySchema> = []) {
     // init transaction context  before init module
     initializeTransactionalContext()
     return {
@@ -25,6 +25,7 @@ export class DatabaseModule {
               database: DatabaseConfig.NAME,
               username: DatabaseConfig.USERNAME,
               password: DatabaseConfig.PASSWORD,
+              entities,
               logging: DatabaseConfig.ENABLED_LOGGING,
               synchronize: DatabaseConfig.ENABLED_SYNC,
               namingStrategy: new SnakeNamingStrategy(),
