@@ -1,5 +1,7 @@
 import { CurrentAdmin } from 'adminjs'
+import { ADMIN_ROLE } from '../constants'
 
-export interface IAdminAuthenticate {
-  (email: string, password: string): Promise<CurrentAdmin | null>
+export interface IAdmin extends CurrentAdmin {
+  role: ADMIN_ROLE
+  roleLv: number
 }

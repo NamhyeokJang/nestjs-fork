@@ -1,10 +1,16 @@
 import { DynamicModule, MiddlewareConsumer, Module } from '@nestjs/common'
-import AdminJS, { CurrentAdmin } from 'adminjs'
+import AdminJS from 'adminjs'
 import session from 'express-session'
 import Connect from 'connect-pg-simple'
+import { DataSource } from 'typeorm'
 import { Database, Resource } from '@adminjs/typeorm'
 import { AdminModule as AdminJSModule } from '@adminjs/nestjs'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { CryptoUtils } from '@slibs/common'
+import { DatabaseModule } from '@slibs/database'
 import { AdminConfig } from './config'
+import { AdminUser } from './entities'
+import { IAdmin } from './interface'
 
 AdminJS.registerAdapter({ Database, Resource })
 const ConnectSession = Connect(session)
@@ -35,19 +41,34 @@ export class AdminModule {
     return {
       module: AdminModule,
       imports: [
+        TypeOrmModule.forFeature([AdminUser]),
         AdminJSModule.createAdminAsync({
-          useFactory: () => ({
+          imports: [DatabaseModule],
+          inject: [DataSource],
+          useFactory: (datasource: DataSource) => ({
             adminJsOptions: {
               rootPath: '/admin',
               resources: [],
             },
             auth: {
-              authenticate: async (email: string, password: string) => {
-                return {
-                  email,
-                  title: password,
-                  id: 1,
-                } as unknown as CurrentAdmin
+              authenticate: async (
+                email: string,
+                password: string,
+              ): Promise<IAdmin | null> => {
+                const repo = datasource.getRepository(AdminUser)
+
+                const admin = await repo.findOneBy({ email })
+                if (!admin) return null
+
+                const check = await CryptoUtils.compareSalted(
+                  password,
+                  admin.password,
+                )
+                if (!check) {
+                  return null
+                }
+
+                return admin.toAdmin()
               },
               cookieName: AdminConfig.COOKIE_NAME,
               cookiePassword: AdminConfig.COOKIE_PASSWORD,

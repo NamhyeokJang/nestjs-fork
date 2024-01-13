@@ -1,0 +1,11 @@
+export enum ADMIN_ROLE {
+  MANAGER = 'MANAGER',
+  ADMIN = 'ADMIN',
+  MASTER = 'MASTER',
+}
+
+export const ADMIN_ROLE_LEVEL = {
+  [ADMIN_ROLE.MANAGER]: 5,
+  [ADMIN_ROLE.ADMIN]: 10,
+  [ADMIN_ROLE.MASTER]: 20,
+}
