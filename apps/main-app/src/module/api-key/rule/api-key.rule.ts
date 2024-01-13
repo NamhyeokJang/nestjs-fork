@@ -1,5 +1,5 @@
 import { ApiKey, IApiKeyRule } from '@slibs/api-key'
-import { IApiKeyMeta } from './api-key.interface'
+import { IApiKeyMeta } from '../interface'
 
 export class ApiKeyRule implements IApiKeyRule {
   async check(apiKey: ApiKey) {

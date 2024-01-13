@@ -1,2 +1,2 @@
-export * from './api-key.interface'
-export * from './api-key.rule'
+export * from './interface'
+export * from './rule'
