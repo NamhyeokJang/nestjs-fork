@@ -2,6 +2,7 @@
 
 node_modules
 dist
+.adminjs
 
 .env
 .env.test

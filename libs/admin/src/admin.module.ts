@@ -1,16 +1,18 @@
 import { DynamicModule, MiddlewareConsumer, Module } from '@nestjs/common'
-import AdminJS from 'adminjs'
+import AdminJS, { Locale } from 'adminjs'
 import session from 'express-session'
 import Connect from 'connect-pg-simple'
 import { DataSource } from 'typeorm'
 import { Database, Resource } from '@adminjs/typeorm'
 import { AdminModule as AdminJSModule } from '@adminjs/nestjs'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { CryptoUtils } from '@slibs/common'
+import { CryptoUtils, DayUtils } from '@slibs/common'
 import { DatabaseModule } from '@slibs/database'
 import { AdminConfig } from './config'
-import { AdminUser } from './entities'
+import { AdminUserOptions } from './constants'
 import { IAdmin } from './interface'
+import { AdminUser } from './entities'
+import { componentLoader } from './components'
 
 AdminJS.registerAdapter({ Database, Resource })
 const ConnectSession = Connect(session)
@@ -37,7 +39,10 @@ export class AdminModule {
       .forRoutes('admin')
   }
 
-  static forRoot(): DynamicModule {
+  static forRoot(
+    // resources: Array<IAdminJSResource> = [],
+    locale?: Locale,
+  ): DynamicModule {
     return {
       module: AdminModule,
       imports: [
@@ -48,7 +53,9 @@ export class AdminModule {
           useFactory: (datasource: DataSource) => ({
             adminJsOptions: {
               rootPath: '/admin',
-              resources: [],
+              resources: [AdminUserOptions],
+              componentLoader: componentLoader,
+              locale: locale,
             },
             auth: {
               authenticate: async (
@@ -56,10 +63,8 @@ export class AdminModule {
                 password: string,
               ): Promise<IAdmin | null> => {
                 const repo = datasource.getRepository(AdminUser)
-
                 const admin = await repo.findOneBy({ email })
                 if (!admin) return null
-
                 const check = await CryptoUtils.compareSalted(
                   password,
                   admin.password,
@@ -67,6 +72,10 @@ export class AdminModule {
                 if (!check) {
                   return null
                 }
+
+                // register admin logged
+                admin.loggedAt = DayUtils.getNowDate()
+                await admin.save({ reload: false })
 
                 return admin.toAdmin()
               },
