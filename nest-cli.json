@@ -60,6 +60,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/api-key/tsconfig.lib.json"
       }
+    },
+    "admin": {
+      "type": "library",
+      "root": "libs/admin",
+      "entryFile": "index",
+      "sourceRoot": "libs/admin/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/admin/tsconfig.lib.json"
+      }
     }
   }
 }

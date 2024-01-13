@@ -56,6 +56,12 @@
       ],
       "@slibs/api-key/*": [
         "libs/api-key/src/*"
+      ],
+      "@slibs/admin": [
+        "libs/admin/src"
+      ],
+      "@slibs/admin/*": [
+        "libs/admin/src/*"
       ]
     }
   }
