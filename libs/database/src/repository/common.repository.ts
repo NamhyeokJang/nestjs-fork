@@ -1,6 +1,7 @@
 import { ObjectLiteral, Repository, SelectQueryBuilder } from 'typeorm'
 import { CommonResponseCode, AssertUtils, DayUtils } from '@slibs/common'
 import { isArray } from 'lodash'
+import { QueryErrorCatcher } from '../decorator'
 
 export abstract class CommonRepository<T extends ObjectLiteral> {
   constructor(private readonly _repository: Repository<T>) {}
@@ -9,6 +10,7 @@ export abstract class CommonRepository<T extends ObjectLiteral> {
     return this._repository.create(partial as T)
   }
 
+  @QueryErrorCatcher()
   async insert(partial: Partial<T>): Promise<number> {
     const inst = this.create(partial)
 
