@@ -7,8 +7,9 @@ import {
   ApiKeyService,
   CreateApiKeyPayload,
 } from '@slibs/api-key'
-import { ApiKeyRule, IApiKeyMeta } from '../../module'
 import { ApiSwagger } from '@slibs/swagger'
+import { ApiKeyRule } from '../rule'
+import { IApiKeyMeta } from '../interface'
 
 @ApiTags('ApiKey')
 @Controller({ path: 'api-key', version: '1' })

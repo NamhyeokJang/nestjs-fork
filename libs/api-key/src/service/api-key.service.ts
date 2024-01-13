@@ -18,6 +18,7 @@ export class ApiKeyService<META extends object> {
       !payload.expiredAt ||
         DayUtils.getDay(payload.expiredAt).isAfter(DayUtils.getNow()),
       CommonResponseCode.BAD_REQUEST,
+      'invalid expired at',
     )
 
     const key = UUIDUtils.v4()

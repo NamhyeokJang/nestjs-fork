@@ -5,22 +5,12 @@ import {
 } from '@nestjs/common'
 import { HealthCheckModule } from '@slibs/health-check'
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
-import {
-  AppErrorFilter,
-  ModuleUtils,
-  RouterLoggerInterceptor,
-} from '@slibs/common'
+import { AppErrorFilter, RouterLoggerInterceptor } from '@slibs/common'
 import { DatabaseModule } from '@slibs/database'
-import { ApiKeyModule } from '@slibs/api-key'
-import * as controllers from './controller'
+import { MaApiKeyModule } from './module'
 
 @Module({
-  imports: [
-    HealthCheckModule,
-    DatabaseModule.forRoot(),
-    ApiKeyModule.forRoot(),
-  ],
-  controllers: [...ModuleUtils.exports(controllers)],
+  imports: [HealthCheckModule, DatabaseModule.forRoot(), MaApiKeyModule],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: RouterLoggerInterceptor },
     { provide: APP_FILTER, useClass: AppErrorFilter },
