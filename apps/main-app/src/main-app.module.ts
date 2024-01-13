@@ -3,16 +3,25 @@ import {
   Module,
   ValidationPipe,
 } from '@nestjs/common'
-import { MainAppController } from './main-app.controller'
 import { MainAppService } from './main-app.service'
 import { HealthCheckModule } from '@slibs/health-check'
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
-import { AppErrorFilter, RouterLoggerInterceptor } from '@slibs/common'
+import {
+  AppErrorFilter,
+  ModuleUtils,
+  RouterLoggerInterceptor,
+} from '@slibs/common'
 import { DatabaseModule } from '@slibs/database'
+import { ApiKeyModule } from '@slibs/api-key'
+import * as controllers from './controller'
 
 @Module({
-  imports: [HealthCheckModule, DatabaseModule.forRoot()],
-  controllers: [MainAppController],
+  imports: [
+    HealthCheckModule,
+    DatabaseModule.forRoot(),
+    ApiKeyModule.forRoot(),
+  ],
+  controllers: [...ModuleUtils.exports(controllers)],
   providers: [
     MainAppService,
     { provide: APP_INTERCEPTOR, useClass: RouterLoggerInterceptor },

@@ -12,7 +12,6 @@ export function swaggerSetup(app: INestApplication): void {
     .setDescription(SwaggerConfig.DESCRIPTION)
     .setVersion(SwaggerConfig.VERSION)
     .addBearerAuth({ type: 'http', in: 'header', bearerFormat: 'JWT' })
-    .addApiKey({ type: 'apiKey', in: 'header', name: 'x-api-key' })
     .build()
 
   const document = SwaggerModule.createDocument(app, builder)

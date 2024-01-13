@@ -51,6 +51,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/database/tsconfig.lib.json"
       }
+    },
+    "api-key": {
+      "type": "library",
+      "root": "libs/api-key",
+      "entryFile": "index",
+      "sourceRoot": "libs/api-key/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/api-key/tsconfig.lib.json"
+      }
     }
   }
 }

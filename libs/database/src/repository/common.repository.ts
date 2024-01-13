@@ -4,14 +4,17 @@ import { isArray } from 'lodash'
 import { QueryErrorCatcher } from '../decorator'
 
 export abstract class CommonRepository<T extends ObjectLiteral> {
-  constructor(private readonly _repository: Repository<T>) {}
+  constructor(
+    private readonly _repository: Repository<T>,
+    private readonly pkField: string,
+  ) {}
 
   create(partial: Partial<T>): T {
     return this._repository.create(partial as T)
   }
 
   @QueryErrorCatcher()
-  async insert(partial: Partial<T>): Promise<number> {
+  async insert(partial: Partial<T>): Promise<number | string> {
     const inst = this.create(partial)
 
     const result = await this._repository
@@ -20,17 +23,17 @@ export abstract class CommonRepository<T extends ObjectLiteral> {
       .values(inst)
       .execute()
 
-    return result.identifiers[0].id
+    return result.identifiers[0][this.pkField]
   }
 
   async findOneById(
-    id: number,
+    pk: number | string,
     decorator?: (qb: SelectQueryBuilder<T>) => void,
   ): Promise<T> {
     const qb = this._repository
       .createQueryBuilder('e')
       .select()
-      .where(`e.id = :id`, { id })
+      .where(`e.${this.pkField} = :pk`, { pk })
 
     if (decorator) {
       decorator(qb)
@@ -39,24 +42,28 @@ export abstract class CommonRepository<T extends ObjectLiteral> {
     return qb.getOneOrFail()
   }
 
-  async update(id: number, updates: Partial<T>) {
+  async update(pk: number | string, updates: Partial<T>) {
     if (Object.keys(updates).length === 0) {
       AssertUtils.throw(CommonResponseCode.BAD_REQUEST, `no updates`)
     }
 
-    const e = await this.findOneById(id)
+    const e = await this.findOneById(pk)
     AssertUtils.ensure(e, CommonResponseCode.NOT_FOUND)
 
     await this._repository
       .createQueryBuilder()
       .update()
       .set({ ...updates, updatedAt: DayUtils.getNow() })
-      .andWhere(`id = :id`, { id })
+      .andWhere(`${this.pkField} = :pk`, { pk })
       .execute()
   }
 
-  async delete(id: number) {
-    await this._repository.delete(id)
+  async delete(pk: number | string) {
+    await this._repository
+      .createQueryBuilder()
+      .delete()
+      .where(`${this.pkField} = :pk`, { pk })
+      .execute()
   }
 
   async query(config: {
@@ -83,7 +90,7 @@ export abstract class CommonRepository<T extends ObjectLiteral> {
     qb = qb.skip(skip).take(take)
 
     if (!config.order) {
-      qb = qb.orderBy(`e.id`, 'DESC')
+      qb = qb.orderBy(`e.${this.pkField}`, 'DESC')
     } else {
       Object.entries(config.order).map(([key, value]) => {
         qb = qb.addOrderBy(key, value)

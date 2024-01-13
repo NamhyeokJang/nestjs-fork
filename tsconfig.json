@@ -50,6 +50,12 @@
       ],
       "@slibs/database/*": [
         "libs/database/src/*"
+      ],
+      "@slibs/api-key": [
+        "libs/api-key/src"
+      ],
+      "@slibs/api-key/*": [
+        "libs/api-key/src/*"
       ]
     }
   }
