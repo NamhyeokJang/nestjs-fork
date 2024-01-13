@@ -8,10 +8,10 @@ import { MainAppService } from './main-app.service'
 import { HealthCheckModule } from '@slibs/health-check'
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { AppErrorFilter, RouterLoggerInterceptor } from '@slibs/common'
-import { ConfigModule } from '@nestjs/config'
+import { DatabaseModule } from '@slibs/database'
 
 @Module({
-  imports: [ConfigModule.forRoot(), HealthCheckModule],
+  imports: [HealthCheckModule, DatabaseModule.forRoot()],
   controllers: [MainAppController],
   providers: [
     MainAppService,

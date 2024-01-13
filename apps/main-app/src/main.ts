@@ -1,9 +1,12 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config()
 import { NestFactory } from '@nestjs/core'
-import { MainAppModule } from './main-app.module'
-import { NestExpressApplication } from '@nestjs/platform-express'
 import { VersioningType } from '@nestjs/common'
-import { swaggerSetup } from '@slibs/swagger'
 import dedent from 'dedent'
+import { swaggerSetup } from '@slibs/swagger'
+import { MainAppConfig } from './config'
+import { NestExpressApplication } from '@nestjs/platform-express'
+import { MainAppModule } from './main-app.module'
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(MainAppModule)
@@ -11,9 +14,13 @@ async function bootstrap() {
 
   swaggerSetup(app)
 
-  await app.listen(3000)
+  const { HOST, PORT } = MainAppConfig
+
+  await app.listen(PORT, HOST)
+
+  return `${HOST}:${PORT}`
 }
 
 bootstrap()
-  .then(url => console.log(dedent(`🚀🚀 START SERVER `)))
+  .then(url => console.log(dedent(`🚀🚀 START SERVER ${url}`)))
   .catch(ex => console.error(ex))

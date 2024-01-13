@@ -44,6 +44,12 @@
       ],
       "@slibs/common/*": [
         "libs/common/src/*"
+      ],
+      "@slibs/database": [
+        "libs/database/src"
+      ],
+      "@slibs/database/*": [
+        "libs/database/src/*"
       ]
     }
   }
