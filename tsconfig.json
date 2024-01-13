@@ -4,7 +4,12 @@
     "jsx": "react",
     "target": "es2022",
     "module": "commonjs",
-    "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
+    "lib": [
+      "dom",
+      "es6",
+      "es2017",
+      "esnext.asynciterable"
+    ],
     "skipLibCheck": true,
     "moduleResolution": "node",
     "removeComments": true,
@@ -21,6 +26,25 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "paths": {}
+    "paths": {
+      "@slibs/health-check": [
+        "libs/health-check/src"
+      ],
+      "@slibs/health-check/*": [
+        "libs/health-check/src/*"
+      ],
+      "@slibs/swagger": [
+        "libs/swagger/src"
+      ],
+      "@slibs/swagger/*": [
+        "libs/swagger/src/*"
+      ],
+      "@slibs/common": [
+        "libs/common/src"
+      ],
+      "@slibs/common/*": [
+        "libs/common/src/*"
+      ]
+    }
   }
 }
