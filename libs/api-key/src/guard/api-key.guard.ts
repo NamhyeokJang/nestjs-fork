@@ -1,6 +1,11 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import { AssertUtils, CommonResponseCode, DayUtils } from '@slibs/common'
+import {
+  AssertUtils,
+  CommonResponseCode,
+  DayUtils,
+  IAuthRequest,
+} from '@slibs/common'
 import { ApiKeyService } from '../service'
 import { IApiKeyRule } from '../interface'
 
@@ -12,7 +17,12 @@ export class ApiKeyGuard<META extends object> implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest()
+    const request = context.switchToHttp().getRequest<IAuthRequest>()
+
+    if (request.isAuthorized) {
+      return request.isAuthorized
+    }
+
     const rule = this.reflector.get<IApiKeyRule>(
       'apiKeyRule',
       context.getHandler(),
@@ -34,6 +44,9 @@ export class ApiKeyGuard<META extends object> implements CanActivate {
       CommonResponseCode.ACCESS_DENIED,
     )
 
-    return true
+    request.authType = 'api-key'
+    request.isAuthorized = true
+
+    return request.isAuthorized
   }
 }
