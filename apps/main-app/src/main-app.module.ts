@@ -1,11 +1,27 @@
-import { Module } from '@nestjs/common'
+import {
+  ClassSerializerInterceptor,
+  Module,
+  ValidationPipe,
+} from '@nestjs/common'
 import { MainAppController } from './main-app.controller'
 import { MainAppService } from './main-app.service'
 import { HealthCheckModule } from '@slibs/health-check'
+import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
+import { AppErrorFilter, RouterLoggerInterceptor } from '@slibs/common'
+import { ConfigModule } from '@nestjs/config'
 
 @Module({
-  imports: [HealthCheckModule],
+  imports: [ConfigModule.forRoot(), HealthCheckModule],
   controllers: [MainAppController],
-  providers: [MainAppService],
+  providers: [
+    MainAppService,
+    { provide: APP_INTERCEPTOR, useClass: RouterLoggerInterceptor },
+    { provide: APP_FILTER, useClass: AppErrorFilter },
+    { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({ transform: true, whitelist: true }),
+    },
+  ],
 })
 export class MainAppModule {}
