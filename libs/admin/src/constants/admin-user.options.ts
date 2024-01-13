@@ -1,11 +1,12 @@
+import { CryptoUtils } from '@slibs/common'
 import { IAdminJSResource } from '../interface'
 import { AdminUser } from '../entities'
 import { ADMIN_ROLE, ADMIN_SIDE } from '../constants'
-import { checkRole } from '@slibs/admin/utils/check-admin-role.utils'
-import { CryptoUtils } from '@slibs/common'
+import { checkRole } from '../utils'
 import { Components } from '../components'
 
 export const AdminUserOptions: IAdminJSResource = {
+  order: 1,
   resource: AdminUser,
   options: {
     navigation: ADMIN_SIDE.ADMIN_USER,

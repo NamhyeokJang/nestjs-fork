@@ -6,4 +6,6 @@ export interface IAdmin extends CurrentAdmin {
   roleLv: number
 }
 
-export interface IAdminJSResource extends ResourceWithOptions {}
+export interface IAdminJSResource extends ResourceWithOptions {
+  order: number // 노출 순서
+}

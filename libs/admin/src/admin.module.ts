@@ -2,15 +2,16 @@ import { DynamicModule, MiddlewareConsumer, Module } from '@nestjs/common'
 import AdminJS, { Locale } from 'adminjs'
 import session from 'express-session'
 import Connect from 'connect-pg-simple'
+import { sortBy } from 'lodash'
 import { DataSource } from 'typeorm'
 import { Database, Resource } from '@adminjs/typeorm'
 import { AdminModule as AdminJSModule } from '@adminjs/nestjs'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { CryptoUtils, DayUtils } from '@slibs/common'
+import { CryptoUtils, DayUtils, UUIDUtils } from '@slibs/common'
 import { DatabaseModule } from '@slibs/database'
 import { AdminConfig } from './config'
 import { AdminUserOptions } from './constants'
-import { IAdmin } from './interface'
+import { IAdmin, IAdminJSResource } from './interface'
 import { AdminUser } from './entities'
 import { componentLoader } from './components'
 
@@ -25,6 +26,7 @@ const sessionStore = new ConnectSession({
 
 @Module({})
 export class AdminModule {
+  static options = new Map<string, IAdminJSResource>()
   configure(consumer: MiddlewareConsumer): any {
     consumer
       .apply(
@@ -39,11 +41,15 @@ export class AdminModule {
       .forRoutes('admin')
   }
 
-  static forRoot(
-    // resources: Array<IAdminJSResource> = [],
-    locale?: Locale,
-  ): DynamicModule {
+  static forFeature(resources: Array<IAdminJSResource>) {
+    resources.forEach(r => this.options.set(UUIDUtils.v4(), r))
+    return this
+  }
+
+  static forRoot(locale?: Locale): DynamicModule {
+    this.options.set(UUIDUtils.v4(), AdminUserOptions)
     return {
+      global: true,
       module: AdminModule,
       imports: [
         TypeOrmModule.forFeature([AdminUser]),
@@ -53,7 +59,7 @@ export class AdminModule {
           useFactory: (datasource: DataSource) => ({
             adminJsOptions: {
               rootPath: '/admin',
-              resources: [AdminUserOptions],
+              resources: sortBy([...this.options.values()], 'order'),
               componentLoader: componentLoader,
               locale: locale,
             },

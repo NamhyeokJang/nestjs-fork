@@ -15,6 +15,11 @@ const Components = {
     'edit',
     'NewPassword.tsx',
   ]),
+  SHOW_API_KEY_KEY: register('SHOW_API_KEY_KEY', [
+    'api-key',
+    'show',
+    'Key.tsx',
+  ]),
 }
 
 export { componentLoader, Components }
