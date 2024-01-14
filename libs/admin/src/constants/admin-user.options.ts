@@ -11,6 +11,7 @@ export const AdminUserOptions: IAdminJSResource = {
   options: {
     navigation: ADMIN_SIDE.ADMIN_USER,
     listProperties: ['id', 'name', 'email', 'role', 'loggedAt'],
+    showProperties: ['id', 'name', 'email', 'role', 'loggedAt'],
     filterProperties: ['id', 'email', 'name', 'role'],
     editProperties: ['name', 'email', 'role', 'newPassword'],
     properties: {

@@ -3,15 +3,23 @@ import {
   Module,
   ValidationPipe,
 } from '@nestjs/common'
-import { HealthCheckModule } from '@slibs/health-check'
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
-import { AppErrorFilter, RouterLoggerInterceptor } from '@slibs/common'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { HealthCheckModule } from '@slibs/health-check'
+import {
+  AppErrorFilter,
+  LocalPathUtils,
+  RouterLoggerInterceptor,
+} from '@slibs/common'
 import { DatabaseModule } from '@slibs/database'
 import { MaApiKeyModule } from './module'
 import { AdminModule } from '@slibs/admin'
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: LocalPathUtils.ASSETS,
+    }),
     HealthCheckModule,
     DatabaseModule.forRoot(),
     MaApiKeyModule,
