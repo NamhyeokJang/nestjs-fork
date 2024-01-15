@@ -46,7 +46,7 @@ export class AdminModule {
     return this
   }
 
-  static forRoot(locale?: Locale): DynamicModule {
+  static forRoot(config?: { locale?: Locale }): DynamicModule {
     this.options.set(UUIDUtils.v4(), AdminUserOptions)
     return {
       global: true,
@@ -61,7 +61,7 @@ export class AdminModule {
               rootPath: '/admin',
               resources: sortBy([...this.options.values()], 'order'),
               componentLoader: componentLoader,
-              locale: locale,
+              locale: config?.locale,
             },
             auth: {
               authenticate: async (

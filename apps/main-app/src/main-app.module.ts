@@ -12,7 +12,7 @@ import {
   RouterLoggerInterceptor,
 } from '@slibs/common'
 import { DatabaseModule } from '@slibs/database'
-import { MaApiKeyModule } from './module'
+import { AdminLocale, MaApiKeyModule } from './module'
 import { AdminModule } from '@slibs/admin'
 
 @Module({
@@ -23,7 +23,7 @@ import { AdminModule } from '@slibs/admin'
     HealthCheckModule,
     DatabaseModule.forRoot(),
     MaApiKeyModule,
-    AdminModule.forRoot(),
+    AdminModule.forRoot({ locale: AdminLocale }),
   ],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: RouterLoggerInterceptor },
