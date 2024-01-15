@@ -6,8 +6,8 @@ const Show: React.FC<BasePropertyProps> = props => {
   const key = props.record!.params.key
 
   return (
-    <div>
-      {props.where === 'show' && <Label>키</Label>}
+    <div style={{ marginBottom: 20 }}>
+      {props.where === 'show' && <Label color={'#898A9A'}>키</Label>}
       <p>
         {' '}
         {key.slice(0, 5)}
