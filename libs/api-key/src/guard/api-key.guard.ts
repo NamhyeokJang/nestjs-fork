@@ -19,10 +19,6 @@ export class ApiKeyGuard<META extends object> implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<IAuthRequest>()
 
-    if (request.isAuthorized) {
-      return request.isAuthorized
-    }
-
     const rule = this.reflector.get<IApiKeyRule>(
       'apiKeyRule',
       context.getHandler(),
@@ -39,13 +35,13 @@ export class ApiKeyGuard<META extends object> implements CanActivate {
       !apiKey.expiredAt || DayUtils.getDay(apiKey.expiredAt).isAfter(now),
       CommonResponseCode.ACCESS_DENIED,
     )
-    AssertUtils.ensure(
-      await rule.check(apiKey),
-      CommonResponseCode.ACCESS_DENIED,
-    )
 
-    request.authType = 'api-key'
-    request.isAuthorized = true
+    const check = await rule.check(apiKey)
+    request.authType = check ? 'api-key' : request.authType
+    request.isAuthorized = request.isAuthorized || check
+
+    // TODO:
+    AssertUtils.ensure(request.isAuthorized, CommonResponseCode.ACCESS_DENIED)
 
     return request.isAuthorized
   }
