@@ -7,7 +7,7 @@ const Description = {
   updatedAt: '마지막 업데이트 시각',
 }
 
-export class Auditable extends BaseEntity {
+export abstract class Auditable extends BaseEntity {
   @Column({
     type: 'timestamp',
     comment: Description.createdAt,

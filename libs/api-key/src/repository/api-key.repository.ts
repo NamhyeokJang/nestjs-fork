@@ -10,6 +10,10 @@ export class ApiKeyRepository extends CommonRepository<ApiKey> {
     @InjectRepository(ApiKey)
     private readonly repository: Repository<ApiKey>,
   ) {
-    super(repository, 'key')
+    super(repository)
+  }
+
+  get pkField(): string {
+    return 'key'
   }
 }

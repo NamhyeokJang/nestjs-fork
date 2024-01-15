@@ -4,10 +4,9 @@ import { isArray } from 'lodash'
 import { QueryErrorCatcher } from '../decorator'
 
 export abstract class CommonRepository<T extends ObjectLiteral> {
-  constructor(
-    private readonly _repository: Repository<T>,
-    private readonly pkField: string,
-  ) {}
+  constructor(private readonly _repository: Repository<T>) {}
+
+  abstract get pkField(): string
 
   create(partial: Partial<T>): T {
     return this._repository.create(partial as T)
