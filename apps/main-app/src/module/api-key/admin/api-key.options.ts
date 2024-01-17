@@ -14,10 +14,10 @@ export const ApiKeyOptions: IAdminJSResource = {
     resource: ApiKey,
     options: {
       navigation: ADMIN_SIDE.API_KEY,
-      listProperties: ['createdAt', 'updatedAt', 'key', 'expiredAt'],
-      showProperties: ['createdAt', 'updatedAt', 'key', 'expiredAt'],
+      listProperties: ['createdAt', 'updatedAt', 'key', 'name', 'expiredAt'],
+      showProperties: ['createdAt', 'updatedAt', 'key', 'name', 'expiredAt'],
       filterProperties: ['key', 'expiredAt'],
-      editProperties: ['expiredAt'],
+      editProperties: ['name', 'expiredAt'],
       properties: {
         key: {
           components: {
