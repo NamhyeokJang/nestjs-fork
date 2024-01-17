@@ -37,6 +37,10 @@ export class ApiKeyGuard<META extends object> implements CanActivate {
     )
 
     const check = await rule.check(apiKey)
+
+    apiKey.lastAccessedAt = now.toDate()
+    await apiKey.save({ reload: false })
+
     request.authType = check ? 'api-key' : request.authType
     request.isAuthorized = request.isAuthorized || check
 
