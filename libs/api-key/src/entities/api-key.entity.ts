@@ -6,6 +6,7 @@ import { UUIDUtils } from '@slibs/common'
 
 const Description = {
   key: `unique key`,
+  name: `name`,
   expiredAt: `expired at`,
   meta: `meta data`,
 }
@@ -16,12 +17,16 @@ export class ApiKey extends Auditable {
   @PrimaryColumn({ type: 'uuid', comment: Description.key, nullable: false })
   key!: string
 
+  @ApiPropertyOptional({ example: 'sample', description: Description.name })
+  @Column({ type: 'varchar', comment: Description.name, nullable: true })
+  name: string | null
+
   @ApiPropertyOptional({
     example: new Date().toISOString(),
     description: Description.expiredAt,
   })
   @Column({ type: 'timestamp', comment: Description.expiredAt, nullable: true })
-  expiredAt!: Date | null
+  expiredAt: Date | null
 
   @Exclude()
   @Column({ type: 'jsonb', comment: Description.meta, default: '{}' })
