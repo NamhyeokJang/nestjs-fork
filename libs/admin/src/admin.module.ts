@@ -59,7 +59,9 @@ export class AdminModule {
           useFactory: (datasource: DataSource) => ({
             adminJsOptions: {
               rootPath: '/admin',
-              resources: sortBy([...this.options.values()], 'order'),
+              resources: sortBy([...this.options.values()], 'order').map(
+                o => o.option,
+              ),
               componentLoader: componentLoader,
               locale: config?.locale,
             },
