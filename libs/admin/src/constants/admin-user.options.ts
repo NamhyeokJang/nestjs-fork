@@ -3,7 +3,7 @@ import { IAdminJSResource } from '../interface'
 import { AdminUser } from '../entities'
 import { ADMIN_ROLE, ADMIN_SIDE } from '../constants'
 import { checkRole } from '../utils'
-import { Components } from '../components'
+import { registerComponents } from '../components'
 
 export const AdminUserOptions: IAdminJSResource = {
   order: 1,
@@ -18,7 +18,10 @@ export const AdminUserOptions: IAdminJSResource = {
       properties: {
         newPassword: {
           components: {
-            edit: Components.EDIT_ADMIN_PASSWORD,
+            edit: registerComponents(
+              'EDIT_ADMIN_PASSWORD',
+              'admin-user/edit/NewPassword.tsx',
+            ),
           },
         },
       },

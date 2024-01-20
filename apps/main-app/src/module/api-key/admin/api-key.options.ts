@@ -5,7 +5,7 @@ import {
   IAdminJSResource,
 } from '@slibs/admin'
 import { ApiKey } from '@slibs/api-key'
-import { Components } from '@slibs/admin/components'
+import { registerComponents } from '@slibs/admin'
 import { DayUtils, UUIDUtils } from '@slibs/common'
 
 export const ApiKeyOptions: IAdminJSResource = {
@@ -28,8 +28,14 @@ export const ApiKeyOptions: IAdminJSResource = {
       properties: {
         key: {
           components: {
-            list: Components.SHOW_API_KEY_KEY,
-            show: Components.SHOW_API_KEY_KEY,
+            list: registerComponents(
+              'SHOW_API_KEY_KEY',
+              'api-key/show/Key.tsx',
+            ),
+            show: registerComponents(
+              'SHOW_API_KEY_KEY',
+              'api-key/show/Key.tsx',
+            ),
           },
         },
       },

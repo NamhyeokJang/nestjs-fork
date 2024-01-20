@@ -1,4 +1,5 @@
 export * from './admin.module'
+export * from './components'
 export * from './interface'
 export * from './constants'
 export * from './utils'

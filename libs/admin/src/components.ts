@@ -5,21 +5,8 @@ import { LocalPathUtils } from '@slibs/common'
 const componentLoader = new ComponentLoader()
 const basePath = LocalPathUtils.getPath(LocalPathUtils.ASSETS, 'adminjs')
 
-function register(key: string, paths: Array<string>) {
-  return componentLoader.add(key, path.join(basePath, ...paths))
+function registerComponents(key: string, p: string) {
+  return componentLoader.add(key, path.join(basePath, p))
 }
 
-const Components = {
-  EDIT_ADMIN_PASSWORD: register('EDIT_ADMIN_PASSWORD', [
-    'admin-user',
-    'edit',
-    'NewPassword.tsx',
-  ]),
-  SHOW_API_KEY_KEY: register('SHOW_API_KEY_KEY', [
-    'api-key',
-    'show',
-    'Key.tsx',
-  ]),
-}
-
-export { componentLoader, Components }
+export { componentLoader, registerComponents }
