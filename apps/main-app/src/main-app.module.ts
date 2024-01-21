@@ -14,6 +14,7 @@ import {
 import { DatabaseModule } from '@slibs/database'
 import { AdminLocale, MaApiKeyModule } from './module'
 import { AdminModule } from '@slibs/admin'
+import { PgQueueModule } from '@slibs/pg-queue'
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AdminModule } from '@slibs/admin'
     DatabaseModule.forRoot(),
     MaApiKeyModule,
     AdminModule.forRoot({ locale: AdminLocale }),
+    PgQueueModule,
   ],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: RouterLoggerInterceptor },

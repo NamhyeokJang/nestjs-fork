@@ -62,6 +62,12 @@
       ],
       "@slibs/admin/*": [
         "libs/admin/src/*"
+      ],
+      "@slibs/pg-queue": [
+        "libs/pg-queue/src"
+      ],
+      "@slibs/pg-queue/*": [
+        "libs/pg-queue/src/*"
       ]
     }
   }

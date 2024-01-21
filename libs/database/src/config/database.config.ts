@@ -12,4 +12,5 @@ export class DatabaseConfig {
   static readonly ENABLED_SYNC = get('DATABASE_ENABLED_SYNC')
     .default('false')
     .asBool()
+  static readonly CONNECT_STRING = `postgres://${DatabaseConfig.USERNAME}:${DatabaseConfig.PASSWORD}:@${DatabaseConfig.HOST}:${DatabaseConfig.PORT}/${DatabaseConfig.NAME}`
 }

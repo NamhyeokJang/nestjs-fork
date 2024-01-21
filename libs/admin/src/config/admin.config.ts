@@ -6,5 +6,5 @@ export class AdminConfig {
   static readonly COOKIE_PASSWORD = get('ADMIN_COOKIE_PASSWORD')
     .required()
     .asString()
-  static readonly SESSION_CONNECT_STRING = `postgres://${DatabaseConfig.USERNAME}:${DatabaseConfig.PASSWORD}:@${DatabaseConfig.HOST}:${DatabaseConfig.PORT}/${DatabaseConfig.NAME}`
+  static readonly SESSION_CONNECT_STRING = DatabaseConfig.CONNECT_STRING
 }
