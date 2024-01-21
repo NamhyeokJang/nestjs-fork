@@ -5,7 +5,7 @@ import { ADMIN_ROLE, ADMIN_SIDE } from '../constants'
 import { checkRole } from '../utils'
 import { registerComponents } from '../components'
 
-export const AdminUserOptions: IAdminJSResource = {
+export const AdminUserAdminOptions: IAdminJSResource = {
   order: 1,
   option: {
     resource: AdminUser,

@@ -8,7 +8,7 @@ import { ApiKey } from '@slibs/api-key'
 import { registerComponents } from '@slibs/admin'
 import { DayUtils, UUIDUtils } from '@slibs/common'
 
-export const ApiKeyOptions: IAdminJSResource = {
+export const ApiKeyAdminOptions: IAdminJSResource = {
   order: 2,
   option: {
     resource: ApiKey,

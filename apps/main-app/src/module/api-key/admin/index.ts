@@ -1,1 +1,1 @@
-export * from './api-key.options'
+export * from './api-key.admin-options'

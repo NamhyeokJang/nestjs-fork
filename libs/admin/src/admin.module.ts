@@ -10,7 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { CryptoUtils, DayUtils, UUIDUtils } from '@slibs/common'
 import { DatabaseModule } from '@slibs/database'
 import { AdminConfig } from './config'
-import { AdminUserOptions } from './constants'
+import { AdminUserAdminOptions } from './constants'
 import { IAdmin, IAdminJSResource } from './interface'
 import { AdminUser } from './entities'
 import { componentLoader } from './components'
@@ -47,7 +47,7 @@ export class AdminModule {
   }
 
   static forRoot(config?: { locale?: Locale }): DynamicModule {
-    this.options.set(UUIDUtils.v4(), AdminUserOptions)
+    this.options.set(UUIDUtils.v4(), AdminUserAdminOptions)
     return {
       global: true,
       module: AdminModule,
