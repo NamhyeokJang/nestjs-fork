@@ -26,7 +26,6 @@ export class WorkerProviderService implements OnModuleInit {
         .getProviders()
         .filter(wrapper => wrapper.isDependencyTreeStatic())
         .filter(({ instance }) => instance && Object.getPrototypeOf(instance))
-        // .filter(({ instance }) => this.scanner.getAllMethodNames(instance)),
         .map(async ({ instance }) => this.register(instance)),
     )
   }

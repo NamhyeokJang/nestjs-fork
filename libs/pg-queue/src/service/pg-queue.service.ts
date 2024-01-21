@@ -7,6 +7,7 @@ import {
   IJob,
   IWorkOptions,
 } from '../interface'
+import { Job } from '../dto'
 
 @Injectable()
 export class PgQueueService implements OnModuleInit {
@@ -45,7 +46,7 @@ export class PgQueueService implements OnModuleInit {
   }
 
   // get job info
-  async getJob(id: string) {
+  async getJob(id: string): Promise<IJob | null> {
     return this._client.getJobById(id)
   }
 
@@ -54,34 +55,16 @@ export class PgQueueService implements OnModuleInit {
     return this._client.fetch(name)
   }
 
-  async fetchCompleted<T>(name: string): Promise<IJob<T> | null> {
-    return await this._client.fetchCompleted(name)
-  }
-
-  async cancel(id: string) {
-    return await this._client.cancel(id)
-  }
-
-  async resume(id: string) {
-    return this._client.resume(id)
-  }
-
-  async complete(id: string) {
-    return this._client.complete(id)
-  }
-
-  async fail(id: string) {
-    return this._client.fail(id)
-  }
-
   // register work
   async registerWork(
     name: string,
-    fn: PgBoss.WorkHandler<any>,
+    fn: (job: Job<any>) => Promise<any>,
     options: IWorkOptions = { teamSize: 10 },
   ): Promise<string> {
     this.logger.log(`REGISTERED_WORK:: name: ${name}`)
-    return this._client.work(name, options, fn)
+    return this._client.work(name, options, async job => {
+      return fn(new Job(this._client, job))
+    })
   }
 
   async onComplete(
