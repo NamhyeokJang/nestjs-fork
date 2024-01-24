@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { CommonResponseCode } from './common-response-code.api'
-import { IResponseCode } from './api.interface'
+import { CommonResponseCode } from '../constants/common-response-code.api'
+import { IResponseCode } from '../interface/api.interface'
 
 export class CommonResponse<T> {
   @ApiProperty({

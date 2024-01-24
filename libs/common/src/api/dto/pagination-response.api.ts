@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IPagination } from './api.interface'
-import { CommonResponseCode } from './common-response-code.api'
+import { IPagination } from '../interface/api.interface'
+import { CommonResponseCode } from '../constants/common-response-code.api'
 
 class Pagination implements IPagination {
   @ApiProperty({ example: 1, description: 'page' })
