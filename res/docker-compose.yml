@@ -1,8 +1,16 @@
 version: "3.3"
 
+#services:
+#  postgres_15:
+#    image: postgres:15.5
+#    ports:
+#      - "5432:5432"
+#    environment:
+#      - POSTGRES_HOST_AUTH_METHOD=trust
+
 services:
-  postgres_15:
-    image: postgres:15.5
+  pgvector:
+    image: "ankane/pgvector"
     ports:
       - "5432:5432"
     environment:
