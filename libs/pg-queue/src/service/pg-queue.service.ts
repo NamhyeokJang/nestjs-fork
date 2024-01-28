@@ -7,14 +7,15 @@ import {
   IJob,
   IWorkOptions,
 } from '../interface'
-import { Job } from '../dto'
+import { PQJob } from '../dto'
+import { RegisterWorkerProvider } from '../provider'
 
 @Injectable()
 export class PgQueueService implements OnModuleInit {
   private readonly logger = new Logger(this.constructor.name)
   private readonly _client: PgBoss
 
-  constructor() {
+  constructor(private readonly workerProvider: RegisterWorkerProvider) {
     this._client = new PgBoss({
       connectionString: PgQueueConfig.CONNECT_STRING,
       schema: PgQueueConfig.SCHEMA,
@@ -23,6 +24,7 @@ export class PgQueueService implements OnModuleInit {
 
   async onModuleInit() {
     await this._client.start()
+    await this.workerProvider.registerWorkers(this)
     this.logger.log(`START PG-QUEUE`)
   }
 
@@ -58,12 +60,12 @@ export class PgQueueService implements OnModuleInit {
   // register work
   async registerWork(
     name: string,
-    fn: (job: Job<any>) => Promise<any>,
+    fn: (job: PQJob<any>) => Promise<any>,
     options: IWorkOptions = { teamSize: 10 },
   ): Promise<string> {
-    this.logger.log(`REGISTERED_WORK:: name: ${name}`)
+    this.logger.log(`REGISTERED_WORK:: name:${name}`)
     return this._client.work(name, options, async job => {
-      return fn(new Job(this._client, job))
+      return fn(new PQJob(this._client, job))
     })
   }
 

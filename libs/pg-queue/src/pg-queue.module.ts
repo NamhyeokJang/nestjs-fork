@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common'
-import { PgQueueService, WorkerProviderService } from './service'
+import { RegisterWorkerProvider } from './provider'
+import { PgQueueService } from './service'
 import { DiscoveryModule } from '@nestjs/core'
 
 @Module({
   imports: [DiscoveryModule],
-  providers: [PgQueueService, WorkerProviderService],
+  providers: [PgQueueService, RegisterWorkerProvider],
   exports: [PgQueueService],
 })
 export class PgQueueModule {}

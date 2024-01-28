@@ -1,36 +1,31 @@
-import { Injectable, OnModuleInit } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { DiscoveryService, MetadataScanner, Reflector } from '@nestjs/core'
 import {
   ON_COMPLETE_WORKER_QUEUE_NAME,
   REGISTER_WORKER_QUEUE_NAME,
   WORKER_OPTIONS,
 } from '../constants'
-import { PgQueueService } from './pg-queue.service'
+import { PgQueueService } from '../service'
 
 @Injectable()
-export class WorkerProviderService implements OnModuleInit {
+export class RegisterWorkerProvider {
   constructor(
     private readonly discovery: DiscoveryService,
     private readonly scanner: MetadataScanner,
     private readonly reflector: Reflector,
-    private readonly pgQueueService: PgQueueService,
   ) {}
 
-  async onModuleInit() {
-    await this.getInstance()
-  }
-
-  async getInstance() {
+  async registerWorkers(service: PgQueueService) {
     await Promise.all(
       this.discovery
         .getProviders()
         .filter(wrapper => wrapper.isDependencyTreeStatic())
         .filter(({ instance }) => instance && Object.getPrototypeOf(instance))
-        .map(async ({ instance }) => this.register(instance)),
+        .map(async ({ instance }) => this.register(service, instance)),
     )
   }
 
-  async register(instance: any) {
+  async register(service: PgQueueService, instance: any) {
     if (instance.constructor.name === 'String') return
 
     const methods = this.scanner.getAllMethodNames(instance)
@@ -45,7 +40,7 @@ export class WorkerProviderService implements OnModuleInit {
         const originMethod = async (...args: unknown[]) =>
           methodRef.call(instance, ...args)
 
-        await this.pgQueueService.registerWork(worker, originMethod, options)
+        await service.registerWork(worker, originMethod, options)
       }
 
       // register complete worker
@@ -58,7 +53,7 @@ export class WorkerProviderService implements OnModuleInit {
         const originMethod = async (...args: unknown[]) =>
           methodRef.call(instance, ...args)
 
-        await this.pgQueueService.onComplete(complete, originMethod, options)
+        await service.onComplete(complete, originMethod, options)
       }
     }
   }

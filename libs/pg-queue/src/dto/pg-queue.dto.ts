@@ -1,7 +1,7 @@
 import PgBoss from 'pg-boss'
 import { IJob } from '../interface'
 
-export class Job<T> {
+export class PQJob<T> {
   constructor(
     private client: PgBoss,
     private readonly raw: IJob<T>,

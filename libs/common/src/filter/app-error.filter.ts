@@ -97,7 +97,7 @@ export class AppErrorFilter implements ExceptionFilter {
     }
 
     if (error instanceof TypeORMError) {
-      this.logger.error(`TypeORMError:: ${error.message}`)
+      this.logger.error(`TypeORMError:: message:${error.message}`)
       return CommonResponse.error({
         responseCode: CommonResponseCode.INTERNAL,
       })

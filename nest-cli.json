@@ -78,6 +78,24 @@
       "compilerOptions": {
         "tsConfigPath": "libs/pg-queue/tsconfig.lib.json"
       }
+    },
+    "langchain": {
+      "type": "library",
+      "root": "libs/langchain",
+      "entryFile": "index",
+      "sourceRoot": "libs/langchain/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/langchain/tsconfig.lib.json"
+      }
+    },
+    "storage": {
+      "type": "library",
+      "root": "libs/storage",
+      "entryFile": "index",
+      "sourceRoot": "libs/storage/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/storage/tsconfig.lib.json"
+      }
     }
   }
 }

@@ -7,6 +7,7 @@ import {
   initializeTransactionalContext,
 } from 'typeorm-transactional'
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
+import { postgresOptions } from './options'
 
 @Module({})
 export class DatabaseModule {
@@ -19,12 +20,7 @@ export class DatabaseModule {
         TypeOrmModule.forRootAsync({
           useFactory: () => {
             return {
-              type: 'postgres',
-              host: DatabaseConfig.HOST,
-              port: DatabaseConfig.PORT,
-              database: DatabaseConfig.NAME,
-              username: DatabaseConfig.USERNAME,
-              password: DatabaseConfig.PASSWORD,
+              ...postgresOptions,
               entities,
               logging: DatabaseConfig.ENABLED_LOGGING,
               synchronize: DatabaseConfig.ENABLED_SYNC,

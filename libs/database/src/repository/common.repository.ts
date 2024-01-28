@@ -52,7 +52,7 @@ export abstract class CommonRepository<T extends ObjectLiteral> {
     await this._repository
       .createQueryBuilder()
       .update()
-      .set({ ...updates, updatedAt: DayUtils.getNow() })
+      .set({ ...updates, updatedAt: DayUtils.getNowDate() })
       .andWhere(`${this.pkField} = :pk`, { pk })
       .execute()
   }
