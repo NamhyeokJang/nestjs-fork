@@ -1,10 +1,10 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm'
 
 export class Migration1706476314852 implements MigrationInterface {
-    name = 'Migration1706476314852'
+  name = 'Migration1706476314852'
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             CREATE TABLE "open_ai_usage" (
                 "created_at" TIMESTAMP NOT NULL,
                 "updated_at" TIMESTAMP NOT NULL,
@@ -26,11 +26,11 @@ export class Migration1706476314852 implements MigrationInterface {
             COMMENT ON COLUMN "open_ai_usage"."prompt_tokens" IS 'prompt tokens';
             COMMENT ON COLUMN "open_ai_usage"."completion_tokens" IS 'completion tokens';
             COMMENT ON COLUMN "open_ai_usage"."total_tokens" IS 'total tokens'
-        `);
-        await queryRunner.query(`
+        `)
+    await queryRunner.query(`
             CREATE UNIQUE INDEX "OPENAI_USAGE_UNIQUE" ON "open_ai_usage" ("key", "date", "model")
-        `);
-        await queryRunner.query(`
+        `)
+    await queryRunner.query(`
             CREATE TYPE "public"."embedding_file_status_enum" AS ENUM(
                 'PENDING',
                 'IN_PROGRESS',
@@ -39,8 +39,8 @@ export class Migration1706476314852 implements MigrationInterface {
                 'DELETING',
                 'DELETED'
             )
-        `);
-        await queryRunner.query(`
+        `)
+    await queryRunner.query(`
             CREATE TABLE "embedding_file" (
                 "created_at" TIMESTAMP NOT NULL,
                 "updated_at" TIMESTAMP NOT NULL,
@@ -60,11 +60,11 @@ export class Migration1706476314852 implements MigrationInterface {
             COMMENT ON COLUMN "embedding_file"."status" IS 'embedding status';
             COMMENT ON COLUMN "embedding_file"."owner" IS 'owner uniq key';
             COMMENT ON COLUMN "embedding_file"."metadata" IS 'metadata'
-        `);
-        await queryRunner.query(`
+        `)
+    await queryRunner.query(`
             CREATE INDEX "IDX_58ec73bca3f5821907576bc66f" ON "embedding_file" ("owner")
-        `);
-        await queryRunner.query(`
+        `)
+    await queryRunner.query(`
             CREATE TABLE "api_key" (
                 "created_at" TIMESTAMP NOT NULL,
                 "updated_at" TIMESTAMP NOT NULL,
@@ -82,11 +82,11 @@ export class Migration1706476314852 implements MigrationInterface {
             COMMENT ON COLUMN "api_key"."expired_at" IS 'expired at';
             COMMENT ON COLUMN "api_key"."last_accessed_at" IS 'last accessed at';
             COMMENT ON COLUMN "api_key"."meta" IS 'meta data'
-        `);
-        await queryRunner.query(`
+        `)
+    await queryRunner.query(`
             CREATE TYPE "public"."admin_user_role_enum" AS ENUM('MANAGER', 'ADMIN', 'MASTER')
-        `);
-        await queryRunner.query(`
+        `)
+    await queryRunner.query(`
             CREATE TABLE "admin_user" (
                 "created_at" TIMESTAMP NOT NULL,
                 "updated_at" TIMESTAMP NOT NULL,
@@ -107,34 +107,55 @@ export class Migration1706476314852 implements MigrationInterface {
             COMMENT ON COLUMN "admin_user"."name" IS 'name';
             COMMENT ON COLUMN "admin_user"."role" IS 'role';
             COMMENT ON COLUMN "admin_user"."logged_at" IS 'last logged at'
-        `);
-    }
+        `)
+    await queryRunner.query(`
+            CREATE TABLE "admin_session" (
+                                 "sid" varchar NOT NULL COLLATE "default",
+                                 "sess" json NOT NULL,
+                                 "expire" timestamp(6) NOT NULL
+            ) WITH (OIDS=FALSE);
+        `)
+    await queryRunner.query(`
+          ALTER TABLE "admin_session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
+        `)
+    await queryRunner.query(`
+      CREATE INDEX "IDX_session_expire" ON "admin_session" ("expire");
+        `)
+    await queryRunner.query(`
+      INSERT INTO "admin_user" (created_at, updated_at, id, email, password, role, logged_at, name) VALUES ('2024-01-14 02:24:28.941000', '2024-01-14 02:24:28.941000', 2, 'master@example.com', '$2b$10$sHVNbRuGbAeR7QiFo9A2ju/P9kGCYGW6.UIYxUkRHQoVC1Kq4YpVK', 'MASTER', null, 'master');
+      `)
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             DROP TABLE "admin_user"
-        `);
-        await queryRunner.query(`
+        `)
+    await queryRunner.query(`
             DROP TYPE "public"."admin_user_role_enum"
-        `);
-        await queryRunner.query(`
+        `)
+    await queryRunner.query(`
             DROP TABLE "api_key"
-        `);
-        await queryRunner.query(`
+        `)
+    await queryRunner.query(`
             DROP INDEX "public"."IDX_58ec73bca3f5821907576bc66f"
-        `);
-        await queryRunner.query(`
+        `)
+    await queryRunner.query(`
             DROP TABLE "embedding_file"
-        `);
-        await queryRunner.query(`
+        `)
+    await queryRunner.query(`
             DROP TYPE "public"."embedding_file_status_enum"
-        `);
-        await queryRunner.query(`
+        `)
+    await queryRunner.query(`
             DROP INDEX "public"."OPENAI_USAGE_UNIQUE"
-        `);
-        await queryRunner.query(`
+        `)
+    await queryRunner.query(`
             DROP TABLE "open_ai_usage"
-        `);
-    }
-
+        `)
+    await queryRunner.query(`
+          DROP INDEX "public"."IDX_session_expire";
+      `)
+    await queryRunner.query(`
+        DROP TABLE "admin_session"
+        `)
+  }
 }
