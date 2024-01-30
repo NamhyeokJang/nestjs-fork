@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common'
 import { PgQueueService, PQJob, QueueWorker } from '@slibs/pg-queue'
 import { Document, TokenTextSplitter } from '../core'
 import { IEmbeddingJob, IRemoveEmbeddedJob } from '../interface'
-import { DOC_TYPE, EMBEDDING_FILE_STATUS, LANGCHAIN_QUEUE } from '../constants'
+import { EMBEDDING_FILE_STATUS, LANGCHAIN_QUEUE } from '../constants'
 import { EmbeddingFileProvider, VectorStoreProvider } from '../provider'
 import { getFileLoader } from '../utils'
 
@@ -105,7 +105,6 @@ export class EmbeddingService {
     )
     try {
       await this.vectorStoreProvider.deleteDocuments(data.project, {
-        type: DOC_TYPE.EMBEDDING,
         fileId: file.id,
       })
       await this.embeddingFileProvider.updateStatus(
@@ -139,7 +138,7 @@ export class EmbeddingService {
     )
     return docs.map(doc => ({
       ...doc,
-      metadata: { ...doc.metadata, type: DOC_TYPE.EMBEDDING, ...metadata },
+      metadata: { ...doc.metadata, ...metadata },
       test: 1,
     }))
   }

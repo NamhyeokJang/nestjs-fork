@@ -4,7 +4,6 @@ import { DataSource } from 'typeorm'
 import { postgresOptions } from '@slibs/database'
 import { TypeORMVectorStore, OpenAIEmbeddings, Document } from '../core'
 import { LangchainConfig } from '../config'
-import { DOC_TYPE } from '../constants'
 
 @Injectable()
 export class VectorStoreProvider {
@@ -21,28 +20,23 @@ export class VectorStoreProvider {
     await vectorStore.addDocuments(docs)
   }
 
-  async addChatHistory(
+  async addTextDocument(
     name: string,
-    context: { question: string; answer: string },
+    pageContent: string,
     metadata: Record<string, any> = {},
   ) {
     await this.addDocuments(name, [
       new Document({
-        pageContent: `Question: ${context.question}\nAnswer: ${context.answer}`,
-        metadata: { ...metadata, type: DOC_TYPE.CHAT },
+        pageContent,
+        metadata: { ...metadata, type: 'text' },
       }),
     ])
   }
 
-  async deleteDocuments(
-    name: string,
-    opt:
-      | { type: DOC_TYPE.EMBEDDING; fileId: number } // delete file embedding vector
-      | { type: DOC_TYPE.CHAT; owner: string }, // delete chat history embedding vector
-  ) {
+  async deleteDocuments(name: string, filter: Record<string, any> = {}) {
     const vectorStore = await this.getVectorStore(name)
     const query = `DELETE FROM ${vectorStore.tableName} WHERE metadata @> $1`
-    await this.datasource.query(query, [opt])
+    await this.datasource.query(query, [filter])
   }
 
   async asRetriever(

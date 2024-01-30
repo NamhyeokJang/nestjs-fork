@@ -12,7 +12,6 @@ import {
 import { OpenAIUsageRepository } from '../repository'
 import { LangchainConfig } from '../config'
 import { VectorStoreProvider } from '../provider'
-import { DOC_TYPE } from '../constants'
 import { OpenAIModel } from '../interface'
 
 @Injectable()
@@ -85,7 +84,7 @@ export class LangChainService {
         context: async ({ question }) => {
           const retriever = await this.vectorStoreProvider.asRetriever(
             project,
-            { filter: { owner: key, type: DOC_TYPE.EMBEDDING } },
+            { filter: { owner: key } },
           )
           const relevantDocs = await retriever.getRelevantDocuments(question)
           return formatDocumentsAsString(relevantDocs)
@@ -93,7 +92,7 @@ export class LangChainService {
         chatHistory: async ({ question }) => {
           const retriever = await this.vectorStoreProvider.asRetriever(
             project,
-            { filter: { owner: key, type: DOC_TYPE.CHAT } },
+            { filter: { owner: key } },
           )
           const relevantDocs = await retriever.getRelevantDocuments(question)
           return formatDocumentsAsString(relevantDocs)
@@ -103,11 +102,10 @@ export class LangChainService {
       this.getChatModel(key, 'gpt-3.5-turbo'),
       new StringOutputParser(),
       async (answer: string, ..._args) => {
-        await this.vectorStoreProvider.addChatHistory(
-          project,
-          { question: input, answer },
-          { owner: key },
-        )
+        const text = `Question: ${input}\nAnswer: ${answer}`
+        await this.vectorStoreProvider.addTextDocument(project, text, {
+          owner: key,
+        })
         return answer
       },
     ])
