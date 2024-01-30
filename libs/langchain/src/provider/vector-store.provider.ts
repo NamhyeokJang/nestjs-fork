@@ -74,7 +74,7 @@ export class VectorStoreProvider {
         }),
         {
           postgresConnectionOptions: postgresOptions,
-          tableName: `${name}_vector_documents`,
+          tableName: `vector_${name}_documents`,
         },
       )
       await vectorStore.ensureTableInDatabase()

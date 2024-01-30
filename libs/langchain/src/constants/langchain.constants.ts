@@ -6,5 +6,5 @@ export const LANGCHAIN_QUEUE = {
   REMOVE_EMBEDDED: 'langchain-remove-embedded',
 }
 
-// langchain vector table 제한 (20글자 이내, 숫자, 소문자만 허용)
-export const LANGCHAIN_PROJECT_REG = /^[a-z0-9]{1,20}$/
+// langchain vector table 제한 (10글자 이내, 숫자, 소문자만 허용)
+export const VECTOR_STORE_REG = /^[a-z0-9]{1,10}$/

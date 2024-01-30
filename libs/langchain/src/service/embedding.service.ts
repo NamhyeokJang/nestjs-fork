@@ -18,7 +18,6 @@ export class EmbeddingService {
 
   // enqueue for vector embedding from upload file
   async enqueueForEmbeddingFile(
-    project: string,
     owner: string,
     file: any,
     metadata: Record<string, any> = {},
@@ -32,7 +31,6 @@ export class EmbeddingService {
       LANGCHAIN_QUEUE.EMBEDDING,
       {
         fileId: embeddingFile.id,
-        project,
         owner,
         metadata,
       },
@@ -40,13 +38,13 @@ export class EmbeddingService {
     )
   }
 
-  async enqueueForDeleteFile(project: string, fileId: number) {
+  async enqueueForDeleteFile(owner: string, fileId: number) {
     const file = await this.embeddingFileProvider.get(fileId)
     await this.queueService.enqueue(
       LANGCHAIN_QUEUE.REMOVE_EMBEDDED,
       {
         fileId: file.id,
-        project,
+        owner,
       },
       { retryLimit: 3 },
     )
@@ -59,7 +57,6 @@ export class EmbeddingService {
     // get file
     const data = job.data
     const owner = data.owner
-    const project = data.project
     const file = await this.embeddingFileProvider.get(data.fileId)
     await this.embeddingFileProvider.updateStatus(
       file,
@@ -71,9 +68,9 @@ export class EmbeddingService {
       const buffer = await this.embeddingFileProvider.getBuffer(file)
       const docs = await this.loadDocumentsFromFile(
         { buffer, mimeType: file.metadata.mimeType },
-        { fileId: file.id, project: project, owner, ...job.data.metadata },
+        { fileId: file.id, owner, ...job.data.metadata },
       )
-      await this.vectorStoreProvider.addDocuments(project, docs)
+      await this.vectorStoreProvider.addDocuments(owner, docs)
       await this.embeddingFileProvider.updateStatus(
         file,
         EMBEDDING_FILE_STATUS.COMPLETED,
@@ -104,7 +101,7 @@ export class EmbeddingService {
       EMBEDDING_FILE_STATUS.DELETING,
     )
     try {
-      await this.vectorStoreProvider.deleteDocuments(data.project, {
+      await this.vectorStoreProvider.deleteDocuments(data.owner, {
         fileId: file.id,
       })
       await this.embeddingFileProvider.updateStatus(
@@ -136,7 +133,7 @@ export class EmbeddingService {
         chunkOverlap: 1,
       }),
     )
-    return docs.map(doc => ({
+    return docs.map((doc: Document) => ({
       ...doc,
       metadata: { ...doc.metadata, ...metadata },
       test: 1,
