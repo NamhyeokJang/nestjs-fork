@@ -23,12 +23,12 @@ import { LangChainModule } from '@slibs/langchain'
     ServeStaticModule.forRoot({
       rootPath: LocalPathUtils.ASSETS,
     }),
-    NestjsFormDataModule,
-    HealthCheckModule,
+    NestjsFormDataModule.config({ isGlobal: true }),
     DatabaseModule.forRoot(),
-    MaApiKeyModule,
     AdminModule.forRoot({ locale: AdminLocale }),
     PgQueueModule,
+    HealthCheckModule,
+    MaApiKeyModule,
     LangChainModule,
   ],
   providers: [
