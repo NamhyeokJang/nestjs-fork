@@ -17,7 +17,6 @@ import { AdminLocale, MaApiKeyModule } from './module'
 import { AdminModule } from '@slibs/admin'
 import { PgQueueModule } from '@slibs/pg-queue'
 import { LangChainModule } from '@slibs/langchain'
-import { TestController } from './test.controller'
 
 @Module({
   imports: [
@@ -41,6 +40,5 @@ import { TestController } from './test.controller'
       useValue: new ValidationPipe({ transform: true, whitelist: true }),
     },
   ],
-  controllers: [TestController],
 })
 export class MainAppModule {}
