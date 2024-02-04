@@ -13,7 +13,7 @@ import {
   RouterLoggerInterceptor,
 } from '@slibs/common'
 import { DatabaseModule } from '@slibs/database'
-import { AdminLocale, MaApiKeyModule } from './module'
+import { AdminLocale, MaApiKeyModule, MaUserModule } from './module'
 import { AdminModule } from '@slibs/admin'
 import { PgQueueModule } from '@slibs/pg-queue'
 import { LangChainModule } from '@slibs/langchain'
@@ -30,6 +30,7 @@ import { LangChainModule } from '@slibs/langchain'
     HealthCheckModule,
     MaApiKeyModule,
     LangChainModule,
+    MaUserModule,
   ],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: RouterLoggerInterceptor },

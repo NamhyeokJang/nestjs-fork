@@ -80,6 +80,12 @@
       ],
       "@slibs/storage/*": [
         "libs/storage/src/*"
+      ],
+      "@slibs/user": [
+        "libs/user/src"
+      ],
+      "@slibs/user/*": [
+        "libs/user/src/*"
       ]
     }
   }

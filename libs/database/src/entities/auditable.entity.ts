@@ -8,6 +8,10 @@ const Description = {
 }
 
 export abstract class Auditable extends BaseEntity {
+  @ApiProperty({
+    example: new Date().toISOString(),
+    description: Description.createdAt,
+  })
   @Column({
     type: 'timestamp',
     comment: Description.createdAt,

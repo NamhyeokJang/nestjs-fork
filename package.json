@@ -42,6 +42,7 @@
     "express-session": "1.17.3",
     "fs-extra": "11.2.0",
     "html-to-text": "9.0.5",
+    "jsonwebtoken": "9.0.2",
     "langchain": "0.1.6",
     "lodash": "4.17.21",
     "mammoth": "1.6.0",
@@ -68,6 +69,7 @@
     "@types/express-session": "1.17.10",
     "@types/fs-extra": "11.0.4",
     "@types/jest": "29.5.11",
+    "@types/jsonwebtoken": "9.0.5",
     "@types/lodash": "4.14.202",
     "@types/node": "20.11.0",
     "@types/react": "18.2.47",
@@ -115,7 +117,8 @@
       "^@slibs/pg-queue(|/.*)$": "<rootDir>/libs/pg-queue/src/$1",
       "^@slibs/admin(|/.*)$": "<rootDir>/libs/admin/src/$1",
       "^@slibs/langchain(|/.*)$": "<rootDir>/libs/langchain/src/$1",
-      "^@slibs/storage(|/.*)$": "<rootDir>/libs/storage/src/$1"
+      "^@slibs/storage(|/.*)$": "<rootDir>/libs/storage/src/$1",
+      "^@slibs/user(|/.*)$": "<rootDir>/libs/user/src/$1"
     }
   }
 }
