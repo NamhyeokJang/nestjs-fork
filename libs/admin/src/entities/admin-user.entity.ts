@@ -1,4 +1,4 @@
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, Index } from 'typeorm'
 import { CommonEntity } from '@slibs/database'
 import { ADMIN_ROLE, ADMIN_ROLE_LEVEL } from '../constants'
 import { IAdmin } from '../interface'
@@ -12,11 +12,11 @@ const Description = {
 }
 
 @Entity()
+@Index(['email'], { unique: true })
 export class AdminUser extends CommonEntity {
   @Column({
     type: 'varchar',
     comment: Description.email,
-    unique: true,
     nullable: false,
   })
   email: string

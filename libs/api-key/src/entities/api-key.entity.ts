@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm'
+import { Column, Entity, Index, PrimaryColumn } from 'typeorm'
 import { Exclude } from 'class-transformer'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
 import { Auditable } from '@slibs/database'
@@ -13,10 +13,11 @@ const Description = {
 }
 
 @Entity()
+@Index(['key'], { unique: true })
 export class ApiKey extends Auditable {
   @ApiProperty({ example: UUIDUtils.v4(), description: Description.key })
   @PrimaryColumn({ type: 'uuid', comment: Description.key, nullable: false })
-  key!: string
+  key: string
 
   @ApiPropertyOptional({ example: 'sample', description: Description.name })
   @Column({ type: 'varchar', comment: Description.name, nullable: true })

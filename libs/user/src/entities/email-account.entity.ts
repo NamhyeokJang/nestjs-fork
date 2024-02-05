@@ -11,7 +11,7 @@ const Description = {
   user: `user info`,
 }
 
-@Entity('email')
+@Entity()
 @Index(['email'], { unique: true })
 export class EmailAccount extends CommonEntity {
   @ApiProperty({
