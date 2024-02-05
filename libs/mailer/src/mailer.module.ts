@@ -9,7 +9,7 @@ import { MailerService } from './service'
 
 @Module({})
 export class MailerModule {
-  static forFeature(type: MailerType): DynamicModule {
+  static forRoot(type: MailerType): DynamicModule {
     const mailerProvider = ((type: MailerType) => {
       switch (type) {
         case 'gmail':
@@ -18,6 +18,7 @@ export class MailerModule {
     })(type)
 
     return {
+      global: true,
       module: MailerModule,
       imports: [TypeOrmModule.forFeature([EmailVerify])],
       providers: [

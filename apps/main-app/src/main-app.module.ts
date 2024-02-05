@@ -18,6 +18,7 @@ import { AdminModule } from '@slibs/admin'
 import { PgQueueModule } from '@slibs/pg-queue'
 import { LangChainModule } from '@slibs/langchain'
 import { ClientSecretModule } from '@slibs/client-secret'
+import { MailerModule } from '@slibs/mailer'
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ClientSecretModule } from '@slibs/client-secret'
     LangChainModule,
     MaUserModule,
     ClientSecretModule,
+    MailerModule.forRoot('gmail'),
   ],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: RouterLoggerInterceptor },
