@@ -92,6 +92,12 @@
       ],
       "@slibs/mailer/*": [
         "libs/mailer/src/*"
+      ],
+      "@slibs/client-secret": [
+        "libs/client-secret/src"
+      ],
+      "@slibs/client-secret/*": [
+        "libs/client-secret/src/*"
       ]
     }
   }

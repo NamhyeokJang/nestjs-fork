@@ -114,6 +114,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/mailer/tsconfig.lib.json"
       }
+    },
+    "client-secret": {
+      "type": "library",
+      "root": "libs/client-secret",
+      "entryFile": "index",
+      "sourceRoot": "libs/client-secret/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/client-secret/tsconfig.lib.json"
+      }
     }
   }
 }

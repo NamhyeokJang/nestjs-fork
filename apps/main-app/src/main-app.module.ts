@@ -17,6 +17,7 @@ import { AdminLocale, MaApiKeyModule, MaUserModule } from './module'
 import { AdminModule } from '@slibs/admin'
 import { PgQueueModule } from '@slibs/pg-queue'
 import { LangChainModule } from '@slibs/langchain'
+import { ClientSecretModule } from '@slibs/client-secret'
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { LangChainModule } from '@slibs/langchain'
     MaApiKeyModule,
     LangChainModule,
     MaUserModule,
+    ClientSecretModule,
   ],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: RouterLoggerInterceptor },

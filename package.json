@@ -121,7 +121,8 @@
       "^@slibs/langchain(|/.*)$": "<rootDir>/libs/langchain/src/$1",
       "^@slibs/storage(|/.*)$": "<rootDir>/libs/storage/src/$1",
       "^@slibs/user(|/.*)$": "<rootDir>/libs/user/src/$1",
-      "^@slibs/mailer(|/.*)$": "<rootDir>/libs/mailer/src/$1"
+      "^@slibs/mailer(|/.*)$": "<rootDir>/libs/mailer/src/$1",
+      "^@slibs/client-secret(|/.*)$": "<rootDir>/libs/client-secret/src/$1"
     }
   }
 }
