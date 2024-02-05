@@ -47,7 +47,22 @@ pnpm nest g app {name}
 pnpm nest g libs {name}
 ```
 
+### database migration command
+```bash
+# run command for migration shell (only first)
+chmod +x gen-migration.sh
+
+# generate lib migration file 
+pnpm migration:gen {lib name}
+
+# run migration
+pnpm migration:run {ormconfig path}
+
+# revert migration
+pnpm migration:revert {ormconfig path}
+```
+
 ### next action
-- [ ] Database migration strategy
+- [x] Database migration strategy
 - [ ] Test 
 - [ ] Optimize Docker image

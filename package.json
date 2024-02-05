@@ -9,7 +9,7 @@
     "test:watch": "jest --watch --runInBand",
     "db:up": "docker-compose -f res/docker-compose.yml up",
     "typeorm": "ts-node -r dotenv/config -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "migration:gen": "pnpm typeorm migration:generate libs/database/src/migrations/main-app/migration -p -d",
+    "migration:gen": "./gen-migration.sh",
     "migration:run": "pnpm typeorm migration:run -d",
     "migration:revert": "pnpm typeorm migration:revert -d"
   },
