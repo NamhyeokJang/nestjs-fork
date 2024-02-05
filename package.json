@@ -47,6 +47,7 @@
     "lodash": "4.17.21",
     "mammoth": "1.6.0",
     "nestjs-form-data": "1.9.5",
+    "nodemailer": "6.9.9",
     "officeparser": "4.0.6",
     "pdf-parse": "1.1.1",
     "pg": "8.11.3",
@@ -72,6 +73,7 @@
     "@types/jsonwebtoken": "9.0.5",
     "@types/lodash": "4.14.202",
     "@types/node": "20.11.0",
+    "@types/nodemailer": "6.4.14",
     "@types/react": "18.2.47",
     "@types/supertest": "6.0.2",
     "@types/uuid": "9.0.7",
@@ -118,7 +120,8 @@
       "^@slibs/admin(|/.*)$": "<rootDir>/libs/admin/src/$1",
       "^@slibs/langchain(|/.*)$": "<rootDir>/libs/langchain/src/$1",
       "^@slibs/storage(|/.*)$": "<rootDir>/libs/storage/src/$1",
-      "^@slibs/user(|/.*)$": "<rootDir>/libs/user/src/$1"
+      "^@slibs/user(|/.*)$": "<rootDir>/libs/user/src/$1",
+      "^@slibs/mailer(|/.*)$": "<rootDir>/libs/mailer/src/$1"
     }
   }
 }

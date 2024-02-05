@@ -86,6 +86,12 @@
       ],
       "@slibs/user/*": [
         "libs/user/src/*"
+      ],
+      "@slibs/mailer": [
+        "libs/mailer/src"
+      ],
+      "@slibs/mailer/*": [
+        "libs/mailer/src/*"
       ]
     }
   }
