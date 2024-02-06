@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { CryptoUtils } from '@slibs/common'
+import { CryptoUtils, DayUtils } from '@slibs/common'
 import { EmailAccountRepository } from '../repository'
 import { EmailAccount, User } from '../entities'
 
@@ -31,5 +31,11 @@ export class EmailAccountProvider {
 
   async checkPassword(account: EmailAccount, password: string) {
     return CryptoUtils.compareSalted(password, account.password)
+  }
+
+  async updateLoggedAt(account: EmailAccount) {
+    return this.emailAccountRepository.update(account.id, {
+      loggedAt: DayUtils.getNowDate(),
+    })
   }
 }

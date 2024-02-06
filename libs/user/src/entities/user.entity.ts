@@ -1,7 +1,8 @@
 import { CommonEntity } from '@slibs/database'
 import { Column, Entity } from 'typeorm'
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { USER_ROLE } from '../constants'
+import { USER_ROLE, USER_ROLE_LV } from '../constants'
+import { Exclude } from 'class-transformer'
 
 const Description = {
   role: `user's role`,
@@ -22,4 +23,9 @@ export class User extends CommonEntity {
     nullable: true,
   })
   nickname: string | null
+
+  @Exclude()
+  get roleLv() {
+    return USER_ROLE_LV[this.role]
+  }
 }

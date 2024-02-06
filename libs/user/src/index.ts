@@ -1,3 +1,7 @@
 export * from './user.module'
 export * from './service'
 export * from './dto'
+export * from './decorator'
+export * from './interface'
+export * from './entities'
+export * from './constants'

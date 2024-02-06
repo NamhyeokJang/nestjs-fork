@@ -2,7 +2,8 @@ import { Request } from 'express'
 
 export interface IAuthRequest extends Request {
   isAuthorized?: boolean
-  authType?: 'api-key' | 'bearer'
+  authType?: 'api-key' | 'user-role'
+  user?: any
 }
 
 export interface IResponseCode {
