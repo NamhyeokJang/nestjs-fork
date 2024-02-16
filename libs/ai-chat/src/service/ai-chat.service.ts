@@ -3,11 +3,14 @@ import {
   EmbeddingService,
   LangChainService,
   OpenAIModel,
+  PromptTemplate,
+  JsonOutputFunctionsParser,
 } from '@slibs/langchain'
 import {
   RequestEmbeddingPayload,
   SimpleCompletionPayload,
-} from '@slibs/ai-chat/dto'
+  SimpleFunctionCallingPayload,
+} from '../dto'
 
 @Injectable()
 export class AiChatService {
@@ -41,5 +44,20 @@ export class AiChatService {
       this.model,
       payload.prompt,
     )
+  }
+
+  async simpleFunctionCalling(payload: SimpleFunctionCallingPayload) {
+    const model = this.langchainService.getChatModel(this.key, this.model)
+    const prompt = PromptTemplate.fromTemplate(`{prompt}`)
+
+    return prompt
+      .pipe(
+        model.bind({
+          functions: [payload.schema],
+          function_call: { name: payload.schema.name },
+        }),
+      )
+      .pipe(new JsonOutputFunctionsParser())
+      .invoke({ prompt: payload.prompt })
   }
 }

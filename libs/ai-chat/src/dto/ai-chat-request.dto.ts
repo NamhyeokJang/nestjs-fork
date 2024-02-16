@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { IsString } from 'class-validator'
+import { FunctionDefinition } from '@slibs/langchain'
+import { IsObject, IsString } from 'class-validator'
 import { IsFiles, MemoryStoredFile } from 'nestjs-form-data'
 
 export class SimpleCompletionPayload {
@@ -20,4 +21,14 @@ export class RequestEmbeddingPayload {
   })
   @IsFiles()
   files: Array<MemoryStoredFile>
+}
+
+export class SimpleFunctionCallingPayload {
+  @ApiProperty({ example: { name: 'func' }, description: 'schema' })
+  @IsObject()
+  schema: FunctionDefinition
+
+  @ApiProperty({ example: 'prompt', description: 'prompt' })
+  @IsString()
+  prompt: string
 }

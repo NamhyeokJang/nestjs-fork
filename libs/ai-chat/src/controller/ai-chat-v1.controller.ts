@@ -5,6 +5,7 @@ import { CommonResponse } from '@slibs/common'
 import {
   RequestEmbeddingPayload,
   SimpleCompletionPayload,
+  SimpleFunctionCallingPayload,
   SimpleTextResponse,
 } from '../dto'
 import { AiChatService } from '../service'
@@ -41,5 +42,12 @@ export class AiChatV1Controller {
   async requestEmbedding(@Body() body: RequestEmbeddingPayload) {
     await this.aiChatService.requestEmbedding(body)
     return CommonResponse.success()
+  }
+
+  @Post('function')
+  @ApiSwagger({ summary: 'simple function calling' })
+  async simpleFunctionCalling(@Body() body: SimpleFunctionCallingPayload) {
+    const res = await this.aiChatService.simpleFunctionCalling(body)
+    return CommonResponse.success({ data: res })
   }
 }
