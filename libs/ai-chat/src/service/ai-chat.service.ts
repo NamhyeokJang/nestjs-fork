@@ -27,6 +27,7 @@ export class AiChatService {
       this.key,
       this.model,
       payload.prompt,
+      true,
     )
   }
 
