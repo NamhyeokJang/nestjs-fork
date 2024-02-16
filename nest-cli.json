@@ -123,6 +123,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/client-secret/tsconfig.lib.json"
       }
+    },
+    "llm-server": {
+      "type": "application",
+      "root": "apps/llm-server",
+      "entryFile": "main",
+      "sourceRoot": "apps/llm-server/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/llm-server/tsconfig.app.json"
+      }
     }
   }
 }

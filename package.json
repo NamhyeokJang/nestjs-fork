@@ -5,7 +5,7 @@
   "scripts": {
     "start:dev": "nest start --watch",
     "build": "nest build",
-    "test": "jest --experimental-vm-modules --runInBand",
+    "test": "jest --runInBand",
     "test:watch": "jest --watch --runInBand",
     "db:up": "docker-compose -f res/docker-compose.yml up",
     "typeorm": "ts-node -r dotenv/config -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
