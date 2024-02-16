@@ -6,7 +6,6 @@ import {
 import { HealthCheckModule } from '@slibs/health-check'
 import { DatabaseModule } from '@slibs/database'
 import { AdminModule } from '@slibs/admin'
-import { PgQueueModule } from '@slibs/pg-queue'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import {
   AppErrorFilter,
@@ -14,16 +13,19 @@ import {
   RouterLoggerInterceptor,
 } from '@slibs/common'
 import { APP_FILTER, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
+import { AiChatModule } from '@slibs/ai-chat'
+import { NestjsFormDataModule } from 'nestjs-form-data'
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
       rootPath: LocalPathUtils.ASSETS,
     }),
+    NestjsFormDataModule.config({ isGlobal: true }),
     HealthCheckModule,
     DatabaseModule.forRoot(),
     AdminModule.forRoot({}),
-    PgQueueModule,
+    AiChatModule,
   ],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: RouterLoggerInterceptor },

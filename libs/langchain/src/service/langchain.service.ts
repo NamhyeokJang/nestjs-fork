@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common'
 import {
   ChatOpenAI,
   OpenAI,
-  ChatPromptTemplate,
   PromptTemplate,
   LLMResult,
   RunnableSequence,
@@ -27,6 +26,7 @@ export class LangChainService {
     return new ChatOpenAI({
       openAIApiKey: LangchainConfig.OPENAI_API_KEY,
       modelName: model,
+      temperature: 0,
       callbacks: [
         {
           // handleLLMStart(
@@ -63,64 +63,46 @@ export class LangChainService {
     })
   }
 
-  async chat(input: string, project: string, key: string) {
-    const prompt = PromptTemplate.fromTemplate(`
-    Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer.
-    ----------------
-    CONTEXT: {context}
-    ----------------
-    CHAT HISTORY: {chatHistory}
-    ----------------
-    QUESTION: {question}
-    ----------------
-    Helpful Answer:
-      `)
+  async simpleCompletion(
+    key: string,
+    model: OpenAIModel,
+    prompt: string,
+  ): Promise<string> {
+    return this.getChatModel(key, model)
+      .pipe(new StringOutputParser())
+      .invoke(prompt)
+  }
+
+  async simpleRagCompletion(
+    key: string,
+    model: OpenAIModel,
+    question: string,
+  ): Promise<string> {
+    const prompt = PromptTemplate.fromTemplate(
+      `Answer the question based only on the following context: {context}
+      Question: {question}
+      Answer: `,
+    )
 
     const chain = RunnableSequence.from([
       {
-        question: ({ question }) => {
-          return question
-        },
+        question: ({ question }) => question,
         context: async ({ question }) => {
-          const retriever = await this.vectorStoreProvider.asRetriever(
-            project,
-            { filter: { owner: key } },
-          )
-          const relevantDocs = await retriever.getRelevantDocuments(question)
-          return formatDocumentsAsString(relevantDocs)
-        },
-        chatHistory: async ({ question }) => {
-          const retriever = await this.vectorStoreProvider.asRetriever(
-            project,
-            { filter: { owner: key } },
-          )
-          const relevantDocs = await retriever.getRelevantDocuments(question)
-          return formatDocumentsAsString(relevantDocs)
+          const retriever = await this.vectorStoreProvider.asRetriever(key)
+          const docs = await retriever.getRelevantDocuments(question)
+          return formatDocumentsAsString(docs)
         },
       },
       prompt,
-      this.getChatModel(key, 'gpt-3.5-turbo'),
-      new StringOutputParser(),
-      async (answer: string, ..._args) => {
-        const text = `Question: ${input}\nAnswer: ${answer}`
-        await this.vectorStoreProvider.addTextDocument(project, text, {
-          owner: key,
-        })
-        return answer
+      argv => {
+        console.log(`---- prompt -----`)
+        console.log(argv.value)
+        return argv
       },
+      this.getChatModel(key, model),
+      new StringOutputParser(),
     ])
 
-    return chain.invoke({ question: input })
-  }
-
-  async invoke(key: string, model: OpenAIModel, prompt: string): Promise<any> {
-    return this.getChatModel(key, model).invoke(prompt)
-  }
-
-  prompt() {
-    return ChatPromptTemplate.fromMessages([
-      ['system', 'You are a world class technical documentation writer.'],
-      ['user', '{input}'],
-    ])
+    return chain.invoke({ question })
   }
 }

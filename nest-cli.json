@@ -132,6 +132,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/llm-server/tsconfig.app.json"
       }
+    },
+    "ai-chat": {
+      "type": "library",
+      "root": "libs/ai-chat",
+      "entryFile": "index",
+      "sourceRoot": "libs/ai-chat/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/ai-chat/tsconfig.lib.json"
+      }
     }
   }
 }

@@ -98,6 +98,12 @@
       ],
       "@slibs/client-secret/*": [
         "libs/client-secret/src/*"
+      ],
+      "@slibs/ai-chat": [
+        "libs/ai-chat/src"
+      ],
+      "@slibs/ai-chat/*": [
+        "libs/ai-chat/src/*"
       ]
     }
   }
